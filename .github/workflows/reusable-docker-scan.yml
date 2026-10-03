@@ -1,0 +1,37 @@
+name: reusable-docker-scan
+
+on:
+  workflow_call:
+    inputs:
+      image-name:
+        description: "Image name (tag :ci is appended)"
+        required: true
+        type: string
+      dockerfile:
+        description: "Path to the Dockerfile"
+        required: false
+        default: "Dockerfile"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build image
+        run: docker build -f ${{ inputs.dockerfile }} -t ${{ inputs.image-name }}:ci .
+
+      - name: Scan image with Trivy
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v "$HOME/.trivy-cache:/root/.cache" \
+            aquasec/trivy:latest image \
+            --exit-code 1 \
+            --severity HIGH,CRITICAL \
+            --ignore-unfixed \
+            ${{ inputs.image-name }}:ci

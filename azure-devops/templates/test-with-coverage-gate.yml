@@ -1,0 +1,17 @@
+# Step template: tests + line-coverage quality gate (default 80%).
+parameters:
+  - name: testProject
+    type: string
+  - name: coverageThreshold
+    type: string
+    default: "80"
+
+steps:
+  - script: >
+      dotnet test ${{ parameters.testProject }}
+      -c Release
+      -p:CollectCoverage=true
+      -p:CoverletOutputFormat=cobertura
+      -p:Threshold=${{ parameters.coverageThreshold }}
+      -p:ThresholdType=line
+    displayName: Test with coverage gate

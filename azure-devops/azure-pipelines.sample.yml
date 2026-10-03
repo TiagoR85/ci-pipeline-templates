@@ -1,0 +1,37 @@
+# Sample wiring: Build -> Deploy DEV -> HOM -> PROD.
+# Approvals are configured on the ADO *Environments* (DEV/HOM/PROD), not in
+# YAML — see docs/adr/0002-azure-devops-environment-approvals.md.
+trigger:
+  - main
+
+stages:
+  - stage: Build
+    displayName: Build and test
+    jobs:
+      - job: BuildTest
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - template: templates/build-dotnet.yml
+            parameters:
+              solutionPath: CiPipelineTemplates.slnx
+          - template: templates/test-with-coverage-gate.yml
+            parameters:
+              testProject: tests/PipelineGate.Tests/PipelineGate.Tests.csproj
+
+  - template: templates/deploy-stage.yml
+    parameters:
+      environment: DEV
+      dependsOn: Build
+
+  - template: templates/deploy-stage.yml
+    parameters:
+      environment: HOM
+      dependsOn: Deploy_DEV
+      serviceUrl: $(SERVICE_URL_HOM)
+
+  - template: templates/deploy-stage.yml
+    parameters:
+      environment: PROD
+      dependsOn: Deploy_HOM
+      serviceUrl: $(SERVICE_URL_PROD)

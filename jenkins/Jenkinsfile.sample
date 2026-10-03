@@ -1,0 +1,34 @@
+// Declarative pipeline consuming the shared library.
+// Approval is the 'input' step before the PROD deploy — ADR-0003.
+@Library('ci-pipeline-templates@main') _
+
+pipeline {
+    agent any
+    options {
+        timestamps()
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'dotnet build CiPipelineTemplates.slnx -c Release'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh '''dotnet test tests/PipelineGate.Tests/PipelineGate.Tests.csproj -c Release
+                    -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura
+                    -p:Threshold=80 -p:ThresholdType=line'''
+            }
+        }
+        stage('Approve PROD') {
+            steps {
+                input message: 'Deploy to PROD?', ok: 'Deploy'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'echo deploying...'
+            }
+        }
+    }
+}

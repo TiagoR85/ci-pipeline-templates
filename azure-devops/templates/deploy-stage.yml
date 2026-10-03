@@ -1,0 +1,32 @@
+# Stage template: deployment job bound to an ADO Environment.
+# The Environment holds the approval check (manual validation) — ADR-0002.
+parameters:
+  - name: environment
+    type: string
+  - name: dependsOn
+    type: string
+    default: ""
+  - name: serviceUrl
+    type: string
+    default: ""
+
+stages:
+  - stage: Deploy_${{ parameters.environment }}
+    displayName: Deploy ${{ parameters.environment }}
+    ${{ if ne(parameters.dependsOn, '') }}:
+      dependsOn: ${{ parameters.dependsOn }}
+    jobs:
+      - deployment: deploy
+        displayName: Deploy to ${{ parameters.environment }}
+        environment: ${{ parameters.environment }}
+        pool:
+          vmImage: ubuntu-latest
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - script: curl -fsS "${{ parameters.serviceUrl }}/health"
+                  displayName: Health check
+                  condition: ne('${{ parameters.serviceUrl }}', '')

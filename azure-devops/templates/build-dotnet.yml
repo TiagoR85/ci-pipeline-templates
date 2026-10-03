@@ -1,0 +1,17 @@
+# Step template: .NET SDK setup + build.
+parameters:
+  - name: dotnetVersion
+    type: string
+    default: "10.0.x"
+  - name: solutionPath
+    type: string
+
+steps:
+  - task: UseDotNet@2
+    displayName: Use .NET ${{ parameters.dotnetVersion }}
+    inputs:
+      packageType: sdk
+      version: ${{ parameters.dotnetVersion }}
+
+  - script: dotnet build ${{ parameters.solutionPath }} -c Release
+    displayName: Build

@@ -1,0 +1,41 @@
+name: reusable-dotnet-ci
+
+on:
+  workflow_call:
+    inputs:
+      test-project:
+        description: "Path to the test .csproj"
+        required: true
+        type: string
+      dotnet-version:
+        description: ".NET SDK version"
+        required: false
+        default: "10.0.x"
+        type: string
+      coverage-threshold:
+        description: "Minimum line coverage (percent)"
+        required: false
+        default: "80"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+
+      - name: Test with coverage gate
+        run: >
+          dotnet test ${{ inputs.test-project }}
+          -c Release
+          -p:CollectCoverage=true
+          -p:CoverletOutputFormat=cobertura
+          -p:Threshold=${{ inputs.coverage-threshold }}
+          -p:ThresholdType=line
