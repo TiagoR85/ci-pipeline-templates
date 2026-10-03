@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PipelineGate/PipelineGate.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PipelineGate.Tests/PipelineGate.Tests.csproj" />
+  </Folder>
+</Solution>
