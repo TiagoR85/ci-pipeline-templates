@@ -1,0 +1,9 @@
+**/.git
+**/bin
+**/obj
+**/TestResults
+docs/
+tests/
+*.md
+.env
+.env.example

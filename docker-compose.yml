@@ -1,0 +1,7 @@
+services:
+  validate:
+    build:
+      context: .
+    image: ci-pipeline-templates:0.1.0
+    # One-shot gate: exit 0 = templates válidos.
+    # Quickstart: docker compose up --build --exit-code-from validate
