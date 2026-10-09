@@ -1,0 +1,41 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    uses: ./.github/workflows/reusable-dotnet-ci.yml
+    with:
+      test-project: tests/PipelineGate.Tests/PipelineGate.Tests.csproj
+
+  validate-templates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Validate pipeline templates (dogfood)
+        run: dotnet run --project src/PipelineGate -- validate .
+
+      - name: Lint GitHub Actions workflows (actionlint)
+        run: >
+          docker run --rm
+          -v "${{ github.workspace }}:/repo"
+          -w /repo
+          rhysd/actionlint:latest
+
+  image:
+    needs: [unit-tests, validate-templates]
+    uses: ./.github/workflows/reusable-docker-scan.yml
+    with:
+      image-name: ci-pipeline-templates
