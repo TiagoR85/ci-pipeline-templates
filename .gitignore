@@ -16,3 +16,6 @@ coverage.*.xml
 
 # Docker
 *.tar
+
+# Agent scratch (never committed)
+.superpowers/
