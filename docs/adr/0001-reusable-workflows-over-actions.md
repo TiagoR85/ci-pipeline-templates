@@ -27,6 +27,8 @@ marketplace.
 
 ## Consequences
 
-- Consumers pin `@v1` tags; breaking changes are SemVer-major tags.
+- Consumers pin `@v1` (a moving major tag updated to the latest `vX.Y.Z` on
+  each release; pin `@v1.0.0` for a frozen version). Breaking changes ship as
+  SemVer-major tags (`v2`, `v3`, ...).
 - Self-test in `ci.yml` calls the same reusable workflow consumers use, so a
   broken recipe breaks *our* CI first (see ADR-0004).

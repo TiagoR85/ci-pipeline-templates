@@ -3,7 +3,7 @@
 [![ci](https://github.com/TiagoR85/ci-pipeline-templates/actions/workflows/ci.yml/badge.svg)](https://github.com/TiagoR85/ci-pipeline-templates/actions/workflows/ci.yml)
 [![codeql](https://github.com/TiagoR85/ci-pipeline-templates/actions/workflows/codeql.yml/badge.svg)](https://github.com/TiagoR85/ci-pipeline-templates/actions/workflows/codeql.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[!.NET](https://img.shields.io/badge/.NET-10.0%20LTS-512BD4)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-10.0%20LTS-512BD4)](https://dotnet.microsoft.com/)
 
 Reusable CI/CD recipes for .NET teams across GitHub Actions, Azure DevOps
 and Jenkins — with a DEV/HOM/PROD approval flow and a coverage quality
@@ -67,6 +67,11 @@ stages:
 ```
 
 Approvals are attached to the ADO Environments DEV/HOM/PROD (ADR-0002).
+
+One-time setup: in Azure DevOps open **Environments → Create environment** for
+`DEV`, `HOM` and `PROD`, then **Approvals and checks → Add check → Approval**
+on `PROD` (and `HOM` if you want a second gate). The pipeline only references
+the environment name; the check lives with the environment.
 
 ### Use it from Jenkins
 
