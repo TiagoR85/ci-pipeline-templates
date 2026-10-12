@@ -11,6 +11,12 @@ gate. I keep every pipeline convention in one versioned place; the
 repositories in my portfolio consume these workflows instead of
 copy-pasting YAML.
 
+## About this repository
+
+This is a **study project** from my public portfolio. I learn by building: I use **AI-assisted development tools** (agent-based pair programming) while holding the project to production standards - automated tests, CI quality gates, security scanning, review pipelines and documented architecture decisions.
+
+The scenario is simple on purpose; the engineering is not.
+
 ## Architecture
 
 ```mermaid
