@@ -17,6 +17,11 @@ on:
         required: false
         default: "80"
         type: string
+      pre-restore-command:
+        description: "Optional shell command run before dotnet test (e.g. populate a local NuGet feed)"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -30,6 +35,11 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ inputs.dotnet-version }}
+
+      - name: Pre-restore preparation
+        if: inputs.pre-restore-command != ''
+        shell: pwsh
+        run: ${{ inputs.pre-restore-command }}
 
       - name: Test with coverage gate
         run: >
