@@ -17,6 +17,16 @@ on:
         required: false
         default: "80"
         type: string
+      runs-on:
+        description: "GitHub Actions runner label (e.g. ubuntu-latest, windows-latest)"
+        required: false
+        default: "ubuntu-latest"
+        type: string
+      build-command:
+        description: "Optional shell command run before dotnet test (e.g. dotnet build -c Release)"
+        required: false
+        default: ""
+        type: string
       pre-restore-command:
         description: "Optional shell command run before dotnet test (e.g. populate a local NuGet feed)"
         required: false
@@ -28,7 +38,7 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs['runs-on'] }}
     steps:
       - uses: actions/checkout@v7
 
@@ -40,6 +50,11 @@ jobs:
         if: inputs.pre-restore-command != ''
         shell: pwsh
         run: ${{ inputs.pre-restore-command }}
+
+      - name: Build
+        if: inputs.build-command != ''
+        shell: pwsh
+        run: ${{ inputs.build-command }}
 
       - name: Test with coverage gate
         run: >
