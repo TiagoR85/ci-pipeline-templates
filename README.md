@@ -62,6 +62,17 @@ jobs:
       test-project: tests/MyService.Tests/MyService.Tests.csproj
 ```
 
+### Use it from a Node/Astro repository
+
+```yaml
+jobs:
+  verify:
+    uses: TiagoR85/ci-pipeline-templates/.github/workflows/reusable-node-ci.yml@v1
+    with:
+      test-command: npm run test:coverage   # the coverage threshold lives in the project config
+      build-command: npm run build
+```
+
 ### Use it from Azure DevOps (`azure-pipelines.yml`)
 
 ```yaml
