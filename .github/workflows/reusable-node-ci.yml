@@ -1,0 +1,67 @@
+name: reusable-node-ci
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: "Node.js version"
+        required: false
+        default: "22"
+        type: string
+      working-directory:
+        description: "Directory containing package.json"
+        required: false
+        default: "."
+        type: string
+      install-command:
+        description: "Install command (npm ci by default)"
+        required: false
+        default: "npm ci"
+        type: string
+      test-command:
+        description: "Test command; put the coverage gate here (e.g. npm run test:coverage)"
+        required: false
+        default: "npm test"
+        type: string
+      build-command:
+        description: "Optional command after tests (e.g. npm run build); empty = skipped"
+        required: false
+        default: ""
+        type: string
+      cache:
+        description: "setup-node cache: npm | yarn | pnpm | empty to disable"
+        required: false
+        default: "npm"
+        type: string
+      runs-on:
+        description: "GitHub Actions runner label"
+        required: false
+        default: "ubuntu-latest"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ${{ inputs['runs-on'] }}
+    defaults:
+      run:
+        working-directory: ${{ inputs['working-directory'] }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ inputs['node-version'] }}
+          cache: ${{ inputs['cache'] }}
+
+      - name: Install
+        run: ${{ inputs['install-command'] }}
+
+      - name: Test with coverage gate
+        run: ${{ inputs['test-command'] }}
+
+      - name: Build
+        if: inputs['build-command'] != ''
+        run: ${{ inputs['build-command'] }}
