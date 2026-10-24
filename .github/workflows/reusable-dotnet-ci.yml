@@ -32,6 +32,11 @@ on:
         required: false
         default: ""
         type: string
+      test-filter:
+        description: "Optional VSTest filter expression (e.g. TestCategory!=E2E)"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -57,6 +62,7 @@ jobs:
         run: ${{ inputs.build-command }}
 
       - name: Test with coverage gate
+        # shortcut: filtro entra via expressão condicional para não deixar "--filter" vazio quando o input não é usado
         run: >
           dotnet test ${{ inputs.test-project }}
           -c Release
@@ -64,3 +70,4 @@ jobs:
           -p:CoverletOutputFormat=cobertura
           -p:Threshold=${{ inputs.coverage-threshold }}
           -p:ThresholdType=line
+          ${{ inputs.test-filter != '' && format('--filter={0}', inputs.test-filter) || '' }}
