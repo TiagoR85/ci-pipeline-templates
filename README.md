@@ -21,7 +21,7 @@ The scenario is simple on purpose; the engineering is not.
 
 ```mermaid
 flowchart LR
-    subgraph consumers["Consumer repositories (15)"]
+    subgraph consumers["Consumer repositories (18)"]
         R1[".NET service repos"]
     end
     subgraph this["ci-pipeline-templates"]
@@ -61,6 +61,12 @@ jobs:
     with:
       test-project: tests/MyService.Tests/MyService.Tests.csproj
 ```
+
+Optional inputs: `dotnet-version` (default `10.0.x`), `coverage-threshold`
+(default `80`, checked **per module** — exclude sub-projects you don't
+measure via coverlet's `Exclude`), `runs-on`, `build-command`,
+`pre-restore-command`, and `test-filter` (e.g. `TestCategory!=E2E` for
+tests that need external secrets).
 
 ### Use it from a Node/Astro repository
 
