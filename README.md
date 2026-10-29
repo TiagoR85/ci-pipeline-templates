@@ -105,6 +105,20 @@ dotnetPipeline(solution: 'app.slnx', testProject: 'tests/T.csproj')
 
 PROD approval = the `input` step in your `Jenkinsfile` (ADR-0003).
 
+### Use it from any repository (documentation gate)
+
+```yaml
+jobs:
+  docs:
+    uses: TiagoR85/ci-pipeline-templates/.github/workflows/reusable-doccheck.yml@v1
+```
+
+Runs [`doccheck`](https://github.com/TiagoR85/doccheck) on push/PR: section,
+version, secret and stack rules — deterministic and offline, no API key in CI.
+Inputs: `doccheck-ref` (default `v0.3.0`, pin it for reproducibility), `path`,
+`fail-on-findings` (default `true`; set `false` for a report that never breaks
+the build), `python-version`, `runs-on`.
+
 ## The pipeline-gate tool
 
 ```bash
