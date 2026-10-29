@@ -115,7 +115,7 @@ jobs:
 
 Runs [`doccheck`](https://github.com/TiagoR85/doccheck) on push/PR: section,
 version, secret and stack rules — deterministic and offline, no API key in CI.
-Inputs: `doccheck-ref` (default `v0.3.0`, pin it for reproducibility), `path`,
+Inputs: `doccheck-ref` (default `v0.3.1`, pin it for reproducibility), `path`,
 `fail-on-findings` (default `true`; set `false` for a report that never breaks
 the build), `python-version`, `runs-on`.
 
