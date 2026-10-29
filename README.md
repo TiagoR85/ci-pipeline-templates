@@ -121,7 +121,8 @@ the build), `python-version`, `runs-on`.
 
 First consumer: `doccheck` itself (`.github/workflows/docs.yml` there) — the gate
 runs green against the tool that generates it, and a broken workflow shows up
-immediately instead of in someone else's repo.
+immediately instead of in someone else's repo. Adopted in: `doccheck`,
+`youtube-gemini-pipeline`, `interview-assistant`, `portfolio`, `vendas-desapego`.
 
 ## The pipeline-gate tool
 
