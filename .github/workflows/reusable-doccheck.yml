@@ -6,7 +6,7 @@ on:
       doccheck-ref:
         description: "doccheck git ref; pin a tag so the gate is reproducible"
         required: false
-        default: "v0.3.1"
+        default: "v0.4.0"
         type: string
       path:
         description: "Repository path to check (default: root)"
