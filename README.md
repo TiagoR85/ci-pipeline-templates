@@ -119,6 +119,10 @@ Inputs: `doccheck-ref` (default `v0.4.0`, pin it for reproducibility), `path`,
 `fail-on-findings` (default `true`; set `false` for a report that never breaks
 the build), `python-version`, `runs-on`.
 
+First consumer: `doccheck` itself (`.github/workflows/docs.yml` there) — the gate
+runs green against the tool that generates it, and a broken workflow shows up
+immediately instead of in someone else's repo.
+
 ## The pipeline-gate tool
 
 ```bash
