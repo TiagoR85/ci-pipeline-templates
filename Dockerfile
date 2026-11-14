@@ -13,7 +13,7 @@ RUN dotnet publish src/PipelineGate/PipelineGate.csproj \
     -c Release -o /app/publish --no-restore
 
 # Estágio 2: runtime mínimo (console, sem ASP.NET)
-FROM mcr.microsoft.com/dotnet/runtime:10.0 AS runtime
+FROM mcr.microsoft.com/dotnet/runtime:11.0 AS runtime
 WORKDIR /app
 
 COPY --from=build /app/publish .
