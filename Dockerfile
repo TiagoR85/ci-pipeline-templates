@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Estágio 1: build com SDK completo
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS build
 WORKDIR /src
 
 COPY Directory.Packages.props .
